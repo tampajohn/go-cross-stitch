@@ -2,6 +2,9 @@
   <head>
     <title>Instructions</title>
     <style>
+div.pagebreak { 
+	page-break-after: always; 
+}
 table.instructions {
   border: 3px solid black; 
   table-layout: fixed; 
@@ -79,6 +82,7 @@ table.legend tr:nth-child(2n) td {
     </table>
     <h1>Pattern</h1>
       {{ range $i, $table := $.Tables }}
+			<div class="pagebreak">
       <table class="instructions">
         <tr>
         {{ range $x := forloop $table.Xstart (plus $table.Xend 1) }}
@@ -103,6 +107,7 @@ table.legend tr:nth-child(2n) td {
         </tr>
         {{ end }}
       </table>
+			</div>
       {{ end }}
   </body>
 </html>
