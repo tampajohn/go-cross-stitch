@@ -3,12 +3,11 @@
     <title>Instructions</title>
     <style>
 div.pagebreak { 
-	page-break-after: always; 
+	page-break-before: always; 
 }
 table.instructions {
   border: 3px solid black; 
   table-layout: fixed; 
-  width: 100%;
   padding: 0;
   border-collapse: collapse;
 }
@@ -38,6 +37,14 @@ td.indexes, th.indexes {
   font-weight: bold;
   font-size: 10pt;
   background-color: lightgray;
+	width: 18px;
+}
+td.symbols {
+  width: 18px;
+	height: 18px;
+	text-align: "center"; 
+	vertical-align: "middle";
+	overflow: hidden;
 }
 table.legend {
   border-collapse: collapse;
@@ -86,23 +93,23 @@ table.legend tr:nth-child(2n) td {
       <table class="instructions">
         <tr>
         {{ range $x := forloop $table.Xstart (plus $table.Xend 1) }}
-          <th width="18" class="indexes">
+          <th width="18px" class="indexes">
           {{ if mod $x 10 }}
           {{ $x }}
           {{ end }}
            </th>
         {{ end }}
         </tr>
-        {{ range $y := forloop $table.Ystart $table.Yend }}
+        {{ range $y := forloop (plus $table.Ystart 1) $table.Yend }}
         <tr>
-          <td width="18" class="indexes">
+          <td class="indexes">
             {{ if mod $y 10 }}
             {{ $y }}
             {{ end }}
           </td>
           {{ $k := minus $y $table.Ystart }}
           {{ range $j := index $table.Symbols $k }}
-          <td width="18" align="center" valign="middle"><div>&#{{ $j }}</div></td>
+          <td class="symbols">&#{{ $j }}</td>
           {{ end }}
         </tr>
         {{ end }}

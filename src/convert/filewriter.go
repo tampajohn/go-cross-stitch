@@ -112,9 +112,9 @@ func (c *Converter) WriteHTML() (string, error) {
 			fmt.Printf("%d %d %d %d\n", table.Xstart, table.Xend, table.Ystart, table.Yend)
 
 			s := make([][]int, table.Yend - table.Ystart + 1)
-			for i := table.Ystart; i < table.Yend; i++ {
+			for i := table.Ystart; i <= table.Yend; i++ {
 				s2 := make([]int, table.Xend - table.Xstart + 1)
-				for j := table.Xstart; j < table.Xend; j++ {
+				for j := table.Xstart; j <= table.Xend; j++ {
 					s2[j - table.Xstart] = c.newImage.symbols[i][j]
 				}
 				s[i - table.Ystart] = s2
