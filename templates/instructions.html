@@ -2,22 +2,16 @@
   <head>
     <title>Instructions</title>
     <style>
-div.pagebreak { 
-	page-break-before: always; 
-}
 table.instructions {
   border: 3px solid black; 
   table-layout: fixed; 
-  padding: 0;
-  border-collapse: collapse;
+  width: 100%;
+	max-width: 918px;
+	border-collapse: collapse;
 }
 table.instructions tr, table.instructions td, table.instructions th {
   border-bottom: 1px solid black;
   border-right: 1px solid black;
-}
-table.instructions td > div, table.instructions th > div {
-  overflow: hidden;
-  height: 18px;
 }
 table.instructions tr td:nth-child(5n+1), table.instructions tr th:nth-child(5n+1) {
   border-right: 2px solid black;
@@ -32,25 +26,32 @@ table.instructions tr:nth-child(10n+1) td, table.instructions th {
   border-bottom: 3px solid black;
 }
 td.indexes, th.indexes {
-  direction:rtl;
-  font-family: sans-serif;
+	font-family: sans-serif;
   font-weight: bold;
-  font-size: 10pt;
+  font-size: 8pt;
+	text-align: "right";
   background-color: lightgray;
 	width: 18px;
+	height: 18px;
+	text-align: right;
+	white-space: nowrap;
+	overflow-y: hidden;
+	padding: 0px;
 }
 td.symbols {
   width: 18px;
-	height: 18px;
-	text-align: "center"; 
-	vertical-align: "middle";
-	overflow: hidden;
+	height: 20px;
+	font-size: 9pt;
+	white-space: nowrap;
+	overflow-y: hidden;
+	padding: 0px;
 }
 table.legend {
   border-collapse: collapse;
 }
 table.legend td, table.legend th {
   padding-right: 18px;
+	height: 20px;
 }
 table.legend tr th {
   border-bottom: 3px solid black;
@@ -59,10 +60,14 @@ table.legend tr:nth-child(2n) td {
   background-color: lightgray;
   text-align: "right"
 }
+div.cushion {
+	padding: 20px;
+}
 @media print {
   table { page-break-inside:auto }
   tr    { page-break-inside:avoid; page-break-after:auto }
-  table.legend { page-break-after: always }
+  div.cushion { page-break-after: always }
+	table.instructions { page-break-after: always }
 }
     </style>
   </head>
@@ -87,34 +92,24 @@ table.legend tr:nth-child(2n) td {
       </tr>
       {{ end }}
     </table>
-    <h1>Pattern</h1>
-      {{ range $i, $table := $.Tables }}
-			<div class="pagebreak">
-      <table class="instructions">
-        <tr>
-        {{ range $x := forloop $table.Xstart (plus $table.Xend 1) }}
-          <th width="18px" class="indexes">
-          {{ if mod $x 10 }}
-          {{ $x }}
-          {{ end }}
-           </th>
-        {{ end }}
-        </tr>
-        {{ range $y := forloop (plus $table.Ystart 1) $table.Yend }}
-        <tr>
-          <td class="indexes">
-            {{ if mod $y 10 }}
-            {{ $y }}
-            {{ end }}
-          </td>
-          {{ $k := minus $y $table.Ystart }}
-          {{ range $j := index $table.Symbols $k }}
-          <td class="symbols">&#{{ $j }}</td>
-          {{ end }}
-        </tr>
-        {{ end }}
-      </table>
-			</div>
+		<div class="cushion"></div>
+    {{ range $i, $table := $.Tables }}
+    <table class="instructions">
+      <tr>
+      {{ range $x := forloop $table.Xstart (plus $table.Xend 1) }}
+				<th class="indexes">{{ if mod $x 10 }}{{ $x }}{{ end }}</th>
       {{ end }}
+      </tr>
+      {{ range $y := forloop $table.Ystart $table.Yend }}
+      <tr>
+				<td class="indexes" align="center">{{ if mod (plus $y 1) 10 }}{{ plus $y 1 }}{{ end }}</td>
+        {{ $k := minus $y $table.Ystart }}
+        {{ range $j := index $table.Symbols $k }}
+				<td class="symbols" align="center" valign="middle">&#{{ $j }}</td>
+        {{ end }}
+      </tr>
+      {{ end }}
+		</table>
+    {{ end }}
   </body>
 </html>
